@@ -1,0 +1,160 @@
+---
+title: "DATA606 - Homework 3"
+author: "Mia Chen"
+date: "March 2, 2019"
+output: html_document
+---
+
+```{r message=FALSE}
+library(DATA606)
+```
+
+####3.2 Area under the curve, Part II. What percent of a standard normal distribution N(mu = 0, sigma = 1) is found in each region? Be sure to draw a graph.
+
+(a) Z > ???1.13 (b) Z < 0.18 (c) Z > 8 (d) |Z| < 0.5
+
+```{r}
+normalPlot(mean = 0, sd = 1, bounds = c(-1.13, 4)) #(a) Z > -1.13
+normalPlot(mean = 0, sd = 1, bounds = c(-4, 0.18)) #(b) Z < 0.18
+normalPlot(mean = 0, sd = 1, bounds = c(8, 10)) #(c) Z > 8
+normalPlot(mean = 0, sd = 1, bounds = c(-0.5, 0.5)) #(d) |Z| < 0.5
+```
+
+####3.4 Triathlon times, Part I. In triathlons, it is common for racers to be placed into age and gender groups. Friends Leo and Mary both completed the Hermosa Beach Triathlon, where Leo competed in the Men, Ages 30 - 34 group while Mary competed in the Women, Ages 25 - 29 group. Leo completed the race in 1:22:28 (4948 seconds), while Mary completed the race in 1:31:53 (5513 seconds). Obviously Leo finished faster, but they are curious about how they did within their respective groups. Can you help them? Here is some information on the performance of their groups:
+* The finishing times of the Men, Ages 30 - 34 group has a mean of 4313 seconds with a
+standard deviation of 583 seconds.
+* The finishing times of the Women, Ages 25 - 29 group has a mean of 5261 seconds with a
+standard deviation of 807 seconds.
+* The distributions of finishing times for both groups are approximately Normal.
+Remember: a better performance corresponds to a faster finish.
+(a) Write down the short-hand for these two normal distributions.
+
+> Men, Ages 30-34: N(mean = 4313, sd = 583)
+> Women, Ages 25-29: N(mean = 5261, sd = 807)
+
+(b) What are the Z-scores for Leo's and Mary's finishing times? What do these Z-scores tell you?
+
+> Leo's Z-score: 1.0892  Mary's Z-score: 0.31
+> These Z-scores tell me how well they performed compared to others in their respective group.
+
+(c) Did Leo or Mary rank better in their respective groups? Explain your reasoning.
+
+> These Z-scores tell me that Leo is probabily slower than average; while Mary is about average or slightly slower.
+
+(d) What percent of the triathletes did Leo finish faster than in his group?
+
+```{r}
+# Leo is faster than those who are on the right tail of the distribution
+pnorm(1.0892, lower.tail = F) #using Z-score
+```
+
+(e) What percent of the triathletes did Mary finish faster than in her group?
+
+```{r}
+pnorm(q = 5513, mean = 5261, sd = 807, lower.tail = F) #using observation value, mean and sd
+pnorm(0.3123, lower.tail = F) #using Z-score
+```
+
+(f) If the distributions of finishing times are not nearly normal, would your answers to parts
+(b) - (e) change? Explain your reasoning.
+
+> Answer to parts (b) and (c) would not change as Z-scores can be calculated for distributions that are not normal. However, parts (d) and (e) could not be answer because we cannot use the normal probability table to calculate probabilities and percentiles without a normal model.
+
+####3.18 Heights of female college students. Below are heights of 25 female college students.
+
+```{r}
+height <- c(54,55,56,56,57,58,58,59,60,60,60,61,61,62,62,63,63,63,64,65,65,67,67,69,73)
+```
+
+(a) The mean height is 61.52 inches with a standard deviation of 4.58 inches. Use this information to determine if the heights approximately follow the 68-95-99.7% Rule.
+
+```{r}
+pnorm(61.52+4.58, mean = 61.52, sd = 4.58) - pnorm(61.52-4.58, mean = 61.52, sd = 4.58)
+pnorm(61.52+2*4.58, mean = 61.52, sd = 4.58) - pnorm(61.52-2*4.58, mean = 61.52, sd = 4.58)
+pnorm(61.52+3*4.58, mean = 61.52, sd = 4.58) - pnorm(61.52-3*4.58, mean = 61.52, sd = 4.58)
+```
+
+> The heights approximately follow the 68-95-99.7% rule.
+
+(b) Do these data appear to follow a normal distribution? Explain your reasoning using the graphs provided below.
+
+![3.18](C:/Users/Bobo/Desktop/3.18.png)
+
+```{r}
+qqnormsim(height)
+```
+
+> The distribution is unimodal and symmetric. The points on the normal probability plot seem to follow a straight line with one outlier on the upper right, but not too extreme compared with the simulated plots.
+
+####3.22 Defective rate. A machine that produces a special type of transistor (a component of computers) has a 2% defective rate. The production is considered a random process where each transistor is independent of the others.
+
+(a) What is the probability that the 10th transistor produced is the first with a defect?
+```{r}
+(0.98)^9 * 0.02 # 9 fine transistors followed by 1 defect
+```
+
+(b) What is the probability that the machine produces no defective transistors in a batch of 100?
+```{r}
+(.98)^100 # 100 transistors each with prob. of .98
+```
+
+(c) On average, how many transistors would you expect to be produced before the first with a defect? What is the standard deviation?
+```{r}
+1/.02 #expected value is 1/p
+sqrt((1-.02)/(.02)^2) #sd is square root of (1-p)/p^2
+```
+
+> We would expect 50 transistors to be produced before the first defect, with standard deviation 49.5.
+
+(d) Another machine that also produces transistors has a 5% defective rate where each transistor is produced independent of the others. On average how many transistors would you expect to be produced with this machine before the first with a defect? What is the standard deviation?
+```{r}
+1/.05 #expected value is 1/p
+sqrt((1-.05)/(.05)^2) #sd is square root of (1-p)/p^2
+```
+
+> We would expect 20 transistors to be produced before the first defect, with standard deviation 19.5.
+
+(e) Based on your answers to parts (c) and (d), how does increasing the probability of an event
+affect the mean and standard deviation of the wait time until success?
+
+> Increasing the probability of an event will speed up the waiting time until first success.
+
+####3.38 Male children. While it is often assumed that the probabilities of having a boy or a girl are the same, the actual probability of having a boy is slightly higher at 0.51. Suppose a couple plans to have 3 kids.
+
+(a) Use the binomial model to calculate the probability that two of them will be boys.
+```{r}
+choose(3,2)*(.51)^2*(.49) #2 out of 3 with prob. of having a boy, 1 with prob. of having a girl
+```
+
+(b) Write out all possible orderings of 3 children, 2 of whom are boys. Use these scenarios to
+calculate the same probability from part (a) but using the addition rule for disjoint outcomes.
+Confirm that your answers from parts (a) and (b) match.
+```{r}
+bbg <- (.51)*(.51)*(.49) #BBG
+bgb <- (.51)*(.49)*(.51) #BGB
+gbb <- (.49)*(.51)*(.51) #GBB
+bbg+bgb+gbb #Add up the probabilities from all scenarios
+```
+
+(c) If we wanted to calculate the probability that a couple who plans to have 8 kids will have
+3 boys, briefly describe why the approach from part (b) would be more tedious than the
+approach from part (a).
+
+> Choosing 3 out of 8 will generate many more scenarios (56 combinations), therefore it will be more tedious if we calculate the probability for each scenario and then add them up.
+
+
+####3.42 Serving in volleyball. A not-so-skilled volleyball player has a 15% chance of making the serve, which involves hitting the ball so it passes over the net on a trajectory such that it will land in the opposing team's court. Suppose that her serves are independent of each other.
+
+(a) What is the probability that on the 10th try she will make her 3rd successful serve?
+```{r}
+#for the 10th try to be the 3rd success, she must have exactly 2 successes out of the first 9 tries, and then follow by 1 success
+choose(9, 2) * (.15)^2 * (.85)^7 * (.15)
+```
+
+(b) Suppose she has made two successful serves in nine attempts. What is the probability that her 10th serve will be successful?
+
+> 15%, since her serves are independent of each other.
+
+(c) Even though parts (a) and (b) discuss the same scenario, the probabilities you calculated should be different. Can you explain the reason for this discrepancy?
+
+> In part (b), the condition of previous 9 attempts are already given, so prob. of 2 out of 9 successes = 1; whereas in part (a), we need to calculate the probability of 2 successes in 9 attempts, and that prob = choose(9, 2) * (.15)^2 * (.85)^7 = 26%. Thus the prob. in (a) is less than that in (b).
