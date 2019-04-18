@@ -1,0 +1,96 @@
+---
+title: "DATA 606 Data Project Proposal"
+author: "Mia Chen"
+date: "April 3, 2019"
+output: html_document
+---
+
+### Data Preparation
+
+```{r setup, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+# load data
+drivers <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/bad-drivers/bad-drivers.csv")
+
+head(drivers)
+
+names(drivers) <- c("State", "Collisions", "Perc.Speeding", "Perc.Alcohol", "Perc.Not.Distracted", "Perc.No.Pre.Accident", "Insurance.Premium", "Insurance.Loss")
+```
+
+
+
+### Research question 
+
+**You should phrase your research question in a way that matches up with the scope of inference your dataset allows for.**
+
+Are insurance incurred losses predictive of higher car insurance premiums?
+
+
+### Cases 
+
+**What are the cases, and how many are there?**
+
+Each case represents a state in the United States. There are 51 observations in the given data set(inlcuding District of Columbia).
+
+
+### Data collection 
+
+**Describe the method of data collection.**
+
+The data is collected from [National Highway Traffic Safety Administration](https://www-fars.nhtsa.dot.gov/Main/index.aspx) and [National Association of Insurance Commissioners](https://www.naic.org/) by [FiveThirtyEight](https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/).
+
+
+### Type of study 
+
+**What type of study is this (observational/experiment)?**
+
+This is an observational study.
+
+
+### Data Source 
+
+**If you collected the data, state self-collected. If not, provide a citation/link.**
+
+Data is collected by FiveThirtyEight and is available online here: [https://github.com/fivethirtyeight/data/tree/master/bad-drivers](https://github.com/fivethirtyeight/data/tree/master/bad-drivers). For this project, data was read from github raw csv file.
+
+
+
+### Dependent Variable
+
+**What is the response variable? Is it quantitative or qualitative?**
+
+The response variable is car Insurance Premium and is quantitatie.
+
+
+### Independent Variable
+
+**You should have two independent variables, one quantitative and one qualitative.**
+
+The two independent variables are State (qualitative) and Insurance Loss (quantitative).
+
+
+### Relevant summary statistics 
+
+**Provide summary statistics for each the variables. Also include appropriate visualizations related to your research question (e.g. scatter plot, boxplots, etc). This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
+
+```{r}
+library(DT)
+library(psych)
+library(ggplot2)
+
+datatable(drivers)
+```
+
+```{r}
+describe(drivers$Insurance.Premium)
+describe(drivers$Insurance.Loss)
+summary(drivers)
+```
+
+```{r}
+ggplot(drivers, aes(x=Insurance.Loss)) + geom_histogram(binwidth = 10)
+```
+
+```{r}
+ggplot(drivers, aes(x=Insurance.Premium)) + geom_histogram(binwidth = 80)
+```
+
